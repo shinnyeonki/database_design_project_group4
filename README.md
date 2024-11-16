@@ -14,7 +14,7 @@
 
 flask 개발환경입니다
 python 3.12 버전 아래의 버전에서는 동작하지 않을 수 있습니다.
-vscode 개발환경을 권장합니다.
+vscode 개발환경 기준입니다
 
 
 #### python 패키지 설치
@@ -33,7 +33,10 @@ Oracle Instant Client 다운로드
 
 다운로드 받은 파일을 압축을 풀고 
 프로젝트 최상위에 넣어주세요
-instantclient_23_6 폴더명이 일반적입니다.
+instantclient_23_6 폴더명입니다
+<p align="center">
+  <img src="media/image.png">
+</p>
 
 #### app.py 실행
 ```bash
