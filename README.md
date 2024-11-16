@@ -1,6 +1,11 @@
 # 데이타베이스 설계 프로젝트
 2024-2 데이터베이스 설계 프로젝트
 
+## 시연
+<p align="center">
+  <img src="media/시연.gif">
+</p>
+
 ## git branch 전략
 - master : 최종 릴리즈 버전
 - dev : 개발 버전
@@ -34,6 +39,9 @@ instantclient_23_6 폴더명이 일반적입니다.
 ```bash
 python app.py 또는 flask run
 ```
+
+
+
 
 
 
