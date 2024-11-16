@@ -3,18 +3,19 @@
         "FLASK_APP": "app.py",
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "1",
-        "LD_LIBRARY_PATH" : "${workspaceFolder}/instantclient_23_6"
+        "LD_LIBRARY_PATH": "${workspaceFolder}/instantclient_23_6"
     },
     "terminal.integrated.env.osx": {
         "FLASK_APP": "app.py",
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "1",
-        "DYLD_LIBRARY_PATH" : "${workspaceFolder}/instantclient_23_6"
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/instantclient_23_6"
     },
     "terminal.integrated.env.windows": {
         "FLASK_APP": "app.py",
         "FLASK_ENV": "development",
         "FLASK_DEBUG": "1",
-        "PATH" : "${workspaceFolder}/instantclient_23_6"
+        "PATH": "${workspaceFolder}\\instantclient_23_6;${env:PATH}",
+        "foo" : "bar"
     }
 }
