@@ -30,7 +30,11 @@ Oracle Instant Client 다운로드
 프로젝트 최상위에 넣어주세요
 instantclient_23_6 폴더명이 일반적입니다.
 
-###
+#### app.py 실행
+```bash
+python app.py 또는 flask run
+```
+
 
 
 
