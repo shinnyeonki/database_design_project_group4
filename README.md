@@ -43,6 +43,9 @@ instantclient_23_6 폴더명입니다
 python app.py 또는 flask run
 ```
 
+### 할일
+- PK id 의 경우 자동으로 증가되도록 설정하도록 database 수정
+
 
 
 
