@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}직원 목록{% endblock %}
+
+{% block content %}
+    <h2>직원 목록</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>직원 ID</th>
+                <th>직원 이름</th>
+                <th>부서 이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>이메일</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee[0] }}</td>
+                    <td>{{ employee[1] }}</td>
+                    <td>{{ employee[2] }}</td>
+                    <td>{{ employee[3] }}</td>
+                    <td>{{ employee[4] }}</td>
+                    <td>{{ employee[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
