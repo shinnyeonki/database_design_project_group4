@@ -1,0 +1,9 @@
+# Oracle Instant Client
+instantclient_23_6/
+# Python Virtual Environment
+.venv/             
+# macOS system file
+.DS_Store         
+# Python cache
+src/__pycache__/  
+
