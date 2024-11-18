@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}직원 목록{% endblock %}
+
+{% block content %}
+    <h2>직원 목록</h2>
+    <h3>직원 정보 추가</h3>
+    <form method="POST">
+        <label for="employee_id">ID:</label>
+        <input type="text" id="employee_id" name="employee_id" required><br><br>
+        
+        <label for="department_id">부서 ID:</label>
+        <input type="text" id="department_id" name="department_id" required><br><br>
+        
+        <label for="employee_name">이름:</label>
+        <input type="text" id="employee_name" name="employee_name" required><br><br> 
+        
+        <label for="registration_number">등록번호:</label>
+        <input type="text" id="registration_number" name="registration_number" required><br><br> <!-- 추가된 필드 -->
+        
+        <label for="education_level">학력:</label>
+        <select id="education_level" name="education_level" required>
+            <option value="고등학교">고등학교</option>
+            <option value="학사">학사</option>
+            <option value="석사">석사</option>
+            <option value="박사">박사</option>
+        </select><br><br>
+        
+        <!-- <label for="employee_address">주소:</label>
+        <input type="text" id="employee_address" name="employee_address"><br><br> NULL 가능 필드
+        
+        <label for="employee_phone_number">전화번호:</label>
+        <input type="text" id="employee_phone_number" name="employee_phone_number"><br><br> NULL 가능 필드
+        
+        <label for="employee_email">이메일:</label>
+        <input type="email" id="employee_email" name="employee_email"><br><br> NULL 가능 필드  -->
+        
+        <input type="submit" name="add_employee" value="직원 추가"> 
+    </form>
+    
+    
+    <h3>직원 검색</h3>
+    <form method="POST">
+        <label for="search_name">이름:</label>
+        <input type="text" id="search_name" name="search_name"><br><br> <!-- NULL 가능 -->
+        <input type="submit" name="search_employee" value="검색">
+    </form>
+
+    <h3>직원 삭제</h3>
+    <form method="POST">
+        <label for="delete_employee">직원 ID:</label>
+        <input type="text" id="delete_employee_id" name="employee_id" required><br><br>
+        <input type="submit" name="delete_employee" value="직원 삭제">
+    </form>
+    
+    <!--
+    <thead> 태그는 표의 제목 영역을 나타냅니다. <table> 하위, <tr> 상위에 위치합니다.
+        <tbody> 태그는 표의 본문 영역을 나타냅니다. <thead>와 같은 위치에 존재합니다.
+        <th> 태그는 제목 셀을 나타냅니다. <td> 태그 대신 사용됩니다.
+    -->
+    <table>
+        <thead>
+            <tr>
+                <th>직원 ID</th>
+                <th>직원 이름</th>
+                <th>부서 이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>이메일</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee[0] }}</td>
+                    <td>{{ employee[1] }}</td>
+                    <td>{{ employee[2] }}</td>
+                    <td>{{ employee[3] }}</td>
+                    <td>{{ employee[4] }}</td>
+                    <td>{{ employee[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

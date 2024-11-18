@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}base.html{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 <body>
     <header>
         <h1>데이터베이스 디자인 프로젝트 4조</h1>
         <nav>
-            <ul>
+            <ul class="main-nav">
                 <li><a href="{{ url_for('main.index') }}">홈</a></li>
-                <li><a href="{{ url_for('main.employee') }}">직원 목록</a></li>
-                <li><a href="{{ url_for('main.department') }}">부서 목록</a></li>
             </ul>
+            <ul class="sub-nav">
+                <li>여기는 test 목록입니다.</li>
+                <li><a href="{{ url_for('test.employee') }}">직원 목록</a></li>
+                <li><a href="{{ url_for('test.department') }}">부서 목록</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         {% block content %}{% endblock %}
