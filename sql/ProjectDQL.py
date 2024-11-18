@@ -1,5 +1,6 @@
 # 미리 data를 생성하여 리스트에 각 속성별로 집어넣고 나중에 한번에 insert문을 출력하는 방식으로 진행
 # 개선할 점, 날짜 속성의 경우 그냥 python 에 Date type 을 사용하는 것이 이후에 좋을 것 같다
+# contract table 다시 만들어 보자
 
 
 import random
@@ -68,12 +69,12 @@ def generate_insert_statements():
     
 
 
-    for project_id in range(1, 201): # 100개의 프로젝트 생성
+    for project_id in range(1, 221): # 00개의 프로젝트 생성
         customer_id = random.randint(1, 100)
         
         # 20개의 프로젝트는 진행중이므로 end_date가 null
         # null 은 그냥 null 인데 어떻게 해야 할까
-        if project_id <= 20:
+        if project_id <= 13:
             start_date = fake.date_between(start_date='-5M', end_date='now')
             end_date = 'null'
         else:
@@ -90,7 +91,7 @@ def generate_insert_statements():
         projcet_PM = random.choice([employee for employee in employee_data if employee[1] == 4])
         participationProject_data.append((projcet_PM[0], project[0], project[3], project[4], 'PM'))
         
-    for participationProject_id in range(1, 501):  # 500개의 프로젝트 참여 데이터 생성
+    for participationProject_id in range(1, 801):  # 500개의 프로젝트 참여 데이터 생성
         while True:  # 중복이 발생하지 않을 때까지 반복
             employee = random.choice(employee_data)
             project = random.choice(project_data)  # 아무거나 골라
@@ -133,7 +134,7 @@ def generate_insert_statements():
         for participation in participationProject_data:
             if project[0] == participation[1] and project[4] != 'null':
                 # start_date 가 2년전 까지만 인센티브 지급
-                if participation[2] >= (fake.date_between(start_date='-2y', end_date='now')):
+                if participation[2] >= (fake.date_between(start_date='-6y', end_date='now')):
                     incentive_amount = random.randint(1, 11) * 100000
                     incentive_data.append((project[0], participation[0], incentive_amount))
                     
