@@ -31,4 +31,4 @@ if __name__ == '__main__':
     app.register_blueprint(test_views.test) #  test 블루프린트를 애플리케이션에 등록
     
     
-    app.run(debug=False, port=5010)
+    app.run(debug=True, port=5010)
