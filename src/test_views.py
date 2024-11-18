@@ -30,6 +30,10 @@ def employee():
             employee_name = request.form['employee_name']
             registration_number = request.form['registration_number']
             education_level = request.form['education_level']
+            skill_set = request.form.get('skill_set', None) # 선택사항
+            employee_email = request.form.get('employee_email', None) # 선택사항
+            employee_phone_number = request.form.get('employee_phone_number', None) # 선택사항
+            employee_address = request.form.get('employee_address', None)
             
             # 튜플 형태로 데이터 생성
             employee_data = (
@@ -37,12 +41,16 @@ def employee():
                 department_id,
                 employee_name,
                 registration_number,
-                education_level
+                education_level,
+                skill_set,  # null 가능
+                employee_email, # null 가능
+                employee_phone_number, # null 가능
+                employee_address # null 가능
             )
             
             cursor.execute("""
-                INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level)
-                VALUES (:1, :2, :3, :4, :5)
+                INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email)
+                VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9)
             """, employee_data)  # 튜플을 직접 전달
             connection.commit()
             print(f"Added employee: {employee_data}")  # 추가된 직원 확인을 위한 출력
