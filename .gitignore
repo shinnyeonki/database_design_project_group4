@@ -1,5 +1,6 @@
 # Oracle Instant Client
 instantclient_23_6/
+instantclient_23_3/
 # Python Virtual Environment
 .venv/             
 # macOS system file
