@@ -30,5 +30,7 @@ if __name__ == '__main__':
     test_views.enroll_connection(connection) # 연결 설정
     app.register_blueprint(test_views.test) #  test 블루프린트를 애플리케이션에 등록
     
-    
-    app.run(debug=False, port=5010)
+    if os.name == 'nt': #윈도우 환경이면 debug false
+        app.run(debug=False, port=5010)
+    else:
+        app.run(debug=True, port=5010)
