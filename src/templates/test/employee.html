@@ -59,7 +59,7 @@
             <input type="submit" name="fetch_employee" value="정보 가져오기">
         </form>
 
-        {% if employee_to_edit %}
+        {% if employee_to_edit %} <!-- 동적으로 생성되는 곳 -->
         <form method="POST">
             <input type="hidden" name="employee_id" value="{{ employee_to_edit[0] }}">
 
