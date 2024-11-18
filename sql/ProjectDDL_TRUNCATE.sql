@@ -1,31 +1,16 @@
-TRUNCATE TABLE "SeminarParticipation";
-
-TRUNCATE TABLE "Seminar";
-
-TRUNCATE TABLE "Incentive";
-
-TRUNCATE TABLE "CustomerEvaluationType";
-
-TRUNCATE TABLE "CustomerEvaluation";
-
-TRUNCATE TABLE "PMEvaluationType";
-
-TRUNCATE TABLE "PMEvaluation";
-
-TRUNCATE TABLE "PeerEvaluationType";
-
-TRUNCATE TABLE "Salary";
-
-TRUNCATE TABLE "Contract";
-
-TRUNCATE TABLE "PeerEvaluation";
-
-TRUNCATE TABLE "ParticipationProject";
-
-TRUNCATE TABLE "Project";
-
-TRUNCATE TABLE "Customer";
-
-TRUNCATE TABLE "Employee";
-
-TRUNCATE TABLE "Department";
+TRUNCATE TABLE Seminar_Participation;
+TRUNCATE TABLE Seminar;
+TRUNCATE TABLE Incentive;
+TRUNCATE TABLE Customer_Evaluation_Type;
+TRUNCATE TABLE Customer_Evaluation;
+TRUNCATE TABLE PM_Evaluation_Type;
+TRUNCATE TABLE PM_Evaluation;
+TRUNCATE TABLE Peer_Evaluation_Type;
+TRUNCATE TABLE Salary;
+TRUNCATE TABLE Contract;
+TRUNCATE TABLE Peer_Evaluation;
+TRUNCATE TABLE Participation_Project;
+TRUNCATE TABLE Project;
+TRUNCATE TABLE Customer;
+TRUNCATE TABLE Employee;
+TRUNCATE TABLE Department;

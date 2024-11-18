@@ -53,7 +53,7 @@ def generate_insert_statements():
     
     # member table
     for employee_id in range(1, 101): # 100명의 직원
-        if employee_id <= 70: #개발자
+        if employee_id <= 66: #개발자
             dept_id = 4  # 개발 부서
             registration_number = generate_registration_number()
             employee_data.append((employee_id, dept_id, fake.name(), registration_number, random.choice(education_level), random.choice(skill_sets), fake.email(), generate_phone_number(), fake.address()))
@@ -68,17 +68,18 @@ def generate_insert_statements():
     
 
 
-    for project_id in range(1, 101): # 100개의 프로젝트 생성
+    for project_id in range(1, 201): # 100개의 프로젝트 생성
         customer_id = random.randint(1, 100)
-        start_date = fake.date_between(start_date='-10y', end_date='now')
         
         # 20개의 프로젝트는 진행중이므로 end_date가 null
         # null 은 그냥 null 인데 어떻게 해야 할까
         if project_id <= 20:
+            start_date = fake.date_between(start_date='-5M', end_date='now')
             end_date = 'null'
         else:
             #단 현재보다 크면 안됨
-            end_date = fake.date_between(start_date=start_date, end_date='now')
+            start_date = fake.date_between(start_date='-5y', end_date='-5M')
+            end_date = fake.date_between(start_date=start_date, end_date=start_date + timedelta(days=152)) # start_date부터 1년 사이
         
         project_data.append((project_id, customer_id, fake.sentence(), start_date, end_date))
         
@@ -142,7 +143,7 @@ def generate_insert_statements():
     for employee in employee_data:
         for _ in range(1, random.randint(1, 11)):  # 1에서 10 사이의 계약 수
             annual_salary = random.randint(3000, 10000) * 10000  # 연봉 생성
-            year_offset = random.randint(0, 10)  # 0년에서 10년 사이의 오프셋
+            year_offset = random.randint(0, 5)  # 0년에서 5년 사이의 오프셋
             contract_date = generate_december_contract_date(year_offset)  # 계약 날짜 생성
             # 계약 데이터 추가
             contract_data.append((contract_id, employee[0], annual_salary, contract_date))  # (contract_id, employee_id, contract_date, annual_salary)

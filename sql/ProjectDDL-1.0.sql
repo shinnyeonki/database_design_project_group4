@@ -163,4 +163,4 @@ CREATE TABLE seminar_participation (
 );
 
 COMMENT ON TABLE participation_project IS '프로젝트 참여 테이블';
--- COMMENT ON COLUMN participation_project.start_date IS 'check를 사용하여 프로젝트 시작일보다 커야 하고 종료일보다 작아야 한다';
+COMMENT ON COLUMN participation_project.start_date IS 'check를 사용하여 프로젝트 시작일보다 커야 하고 종료일보다 작아야 한다';
