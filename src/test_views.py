@@ -76,6 +76,7 @@ def employee():
                 FROM employee JOIN department
                 ON employee.department_id = department.department_id
                 WHERE employee_name LIKE :search_name
+                ORDER BY employee_id
             """, {'search_name': '%' + search_name + '%'})
             employees = cursor.fetchall()
             print(f"Searching for: '{search_name}'")
@@ -145,6 +146,7 @@ def employee():
             SELECT employee_id, employee_name, department_name, employee_address, employee_phone_number, employee_email
             FROM employee JOIN department
             ON employee.department_id = department.department_id
+            ORDER BY employee_id
         """)
         employees = cursor.fetchall()
     return render_template('test/employee.html', employees=employees, employee_to_edit=employee_to_edit)
