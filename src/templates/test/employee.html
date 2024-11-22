@@ -3,7 +3,7 @@
 {% block title %}직원 목록{% endblock %}
 
 {% block content %}
-    <div class="add-employee">
+    <div class="add-employee" id="section">
         <h3>직원 정보 추가</h3>
         <form method="POST">
             <label for="employee_id">ID(*):</label>
@@ -44,16 +44,17 @@
         </form>
     </div>
 
-    <div class="search-employee">
+    <div class="search-employee" id="section">
         <h3>직원 검색</h3>
         <form method="POST">
             <label for="search_name">이름:</label>
             <input type="text" id="search_name" name="search_name">
+            <br><br>
             <input type="submit" name="search_employee" value="검색">
         </form>
     </div>
 
-    <div class="edit-employee">
+    <div class="section edit-employee" id="section">
         <h3>직원 수정</h3>
         <form method="POST">
             <label for="edit_employee">직원 ID:</label>
@@ -104,7 +105,7 @@
         {% endif %}
     </div>
 
-    <div class="delete-employee">
+    <div class="section delete-employee" id="section">
         <h3>직원 삭제</h3>
         <form method="POST">
             <label for="delete_employee">직원 ID:</label>
@@ -118,7 +119,7 @@
         <tbody> 태그는 표의 본문 영역을 나타냅니다. <thead>와 같은 위치에 존재합니다.
         <th> 태그는 제목 셀을 나타냅니다. <td> 태그 대신 사용됩니다.
     -->
-    <div class="employee-list">
+    <div class="employee-list" id="section">
     <h2>직원 목록</h2>
     <table>
         <thead>

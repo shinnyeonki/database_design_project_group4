@@ -61,7 +61,15 @@ main {
 }
 
 /* 섹션 스타일 */
-.add-employee, .search-employee, .edit-employee, .delete-employee, .employee-list {
+/* .add-employee, .search-employee, .edit-employee, .delete-employee, .employee-list {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+} */
+
+#section {
     margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #ddd;
