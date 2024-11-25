@@ -1,11 +1,11 @@
 TRUNCATE TABLE Seminar_Participation;
 TRUNCATE TABLE Seminar;
 TRUNCATE TABLE Incentive;
-TRUNCATE TABLE Customer_Evaluation_Type;
+-- TRUNCATE TABLE Customer_Evaluation_Type;
 TRUNCATE TABLE Customer_Evaluation;
-TRUNCATE TABLE PM_Evaluation_Type;
+-- TRUNCATE TABLE PM_Evaluation_Type;
 TRUNCATE TABLE PM_Evaluation;
-TRUNCATE TABLE Peer_Evaluation_Type;
+-- TRUNCATE TABLE Peer_Evaluation_Type;
 TRUNCATE TABLE Salary;
 TRUNCATE TABLE Contract;
 TRUNCATE TABLE Peer_Evaluation;

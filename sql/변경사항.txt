@@ -8,3 +8,6 @@ https://luji.tistory.com/71
 sample 데이터의 경우 id 의 경우 pk 그대로 사용하였고 비밀번호의 경우 1111 입니다
 로그인 id 의 경우 unique 입니다
 
+
+반정규화 완료
+

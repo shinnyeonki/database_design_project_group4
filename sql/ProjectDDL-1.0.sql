@@ -17,8 +17,8 @@ CREATE TABLE employee (
     employee_email VARCHAR2(50) NULL,
     employee_phone_number VARCHAR2(20) NULL,
     employee_address VARCHAR2(100) NULL,
-    login_id VARCHAR2(30) NOT NULL UNIQUE, -- 로그인 ID UNIQUE
-    login_passwd VARCHAR2(255) NOT NULL, -- 암호화된 비밀번호
+    username VARCHAR2(30) NOT NULL UNIQUE, -- 로그인 ID UNIQUE
+    passwd VARCHAR2(255) NOT NULL, -- 암호화된 비밀번호
     CONSTRAINT PK_EMPLOYEE PRIMARY KEY (employee_id),
     CONSTRAINT FK_Department_TO_Employee_1 FOREIGN KEY (department_id) REFERENCES department (department_id)
 );
@@ -78,66 +78,53 @@ CREATE TABLE salary (
     CONSTRAINT FK_Contract_TO_Salary_1 FOREIGN KEY (contract_id) REFERENCES contract (contract_id)
 );
 
--- 동료 평가, PM 평가, 고객 평가
+-- Combined peer evaluation table
 CREATE TABLE peer_evaluation (
-    evaluation_id INTEGER NOT NULL,   -- auto increment
+    evaluation_id INTEGER NOT NULL, -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
     score INTEGER NOT NULL,
+    evaluation_type VARCHAR2(50) NOT NULL,
+    evaluation_content VARCHAR2(500) NULL,
     CONSTRAINT PK_PEEREVALUATION PRIMARY KEY (evaluation_id),
     CONSTRAINT FK_Project_TO_PeerEvaluation_1 FOREIGN KEY (project_id) REFERENCES project (project_id),
     CONSTRAINT FK_Employee_TO_PeerEvaluation_1 FOREIGN KEY (evaluator_id) REFERENCES employee (employee_id),
     CONSTRAINT FK_Employee_TO_PeerEvaluation_2 FOREIGN KEY (evaluated_employee_id) REFERENCES employee (employee_id),
-    CONSTRAINT CK_PeerEvaluation_Score CHECK (score BETWEEN 0 AND 10)
+    CONSTRAINT CK_PeerEvaluation_Score CHECK (score BETWEEN 0 AND 10),
+    CONSTRAINT CK_PeerEvaluation_Type CHECK (evaluation_type IN ('업무 수행평가', '커뮤니케이션 수행평가'))
 );
 
-CREATE TABLE peer_evaluation_type (
-    evaluation_id INTEGER NOT NULL,
-    evaluation_type VARCHAR2(50) NOT NULL,
-    evaluation_content VARCHAR2(500) NULL,
-    CONSTRAINT PK_PEEREVALUATIONTYPE PRIMARY KEY (evaluation_id, evaluation_type),
-    CONSTRAINT FK_PeerEvaluation_TO_PeerEvaluationType_1 FOREIGN KEY (evaluation_id) REFERENCES peer_evaluation (evaluation_id)
-);
-
+-- Combined PM evaluation table
 CREATE TABLE pm_evaluation (
-    evaluation_id INTEGER NOT NULL,   -- auto increment
+    evaluation_id INTEGER NOT NULL, -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
     score INTEGER NOT NULL,
+    evaluation_type VARCHAR2(50) NOT NULL,
+    evaluation_content VARCHAR2(500) NULL,
     CONSTRAINT PK_PMEVALUATION PRIMARY KEY (evaluation_id),
     CONSTRAINT FK_Project_TO_PMEvaluation_1 FOREIGN KEY (project_id) REFERENCES project (project_id),
     CONSTRAINT FK_Employee_TO_PMEvaluation_1 FOREIGN KEY (evaluator_id) REFERENCES employee (employee_id),
-    CONSTRAINT FK_Employee_TO_PMEvaluation_2 FOREIGN KEY (evaluated_employee_id) REFERENCES employee (employee_id)
+    CONSTRAINT FK_Employee_TO_PMEvaluation_2 FOREIGN KEY (evaluated_employee_id) REFERENCES employee (employee_id),
+    CONSTRAINT CK_PMEvaluation_Type CHECK (evaluation_type IN ('업무 수행평가', '커뮤니케이션 수행평가'))
 );
 
-CREATE TABLE pm_evaluation_type (
-    evaluation_id INTEGER NOT NULL, 
-    evaluation_type VARCHAR2(50) NOT NULL,
-    evaluation_content VARCHAR2(500) NULL,
-    CONSTRAINT PK_PMEVALUATIONTYPE PRIMARY KEY (evaluation_id, evaluation_type),
-    CONSTRAINT FK_PMEvaluation_TO_PMEvaluationType_1 FOREIGN KEY (evaluation_id) REFERENCES pm_evaluation (evaluation_id)
-);
-
+-- Combined customer evaluation table
 CREATE TABLE customer_evaluation (
-    evaluation_id INTEGER NOT NULL,   -- auto increment
+    evaluation_id INTEGER NOT NULL, -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
     score INTEGER NOT NULL,
+    evaluation_type VARCHAR2(50) NOT NULL,
+    evaluation_content VARCHAR2(500) NULL,
     CONSTRAINT PK_CUSTOMEREVALUATION PRIMARY KEY (evaluation_id),
     CONSTRAINT FK_Project_TO_CustomerEvaluation_1 FOREIGN KEY (project_id) REFERENCES project (project_id),
     CONSTRAINT FK_Customer_TO_CustomerEvaluation_1 FOREIGN KEY (evaluator_id) REFERENCES customer (customer_id),
-    CONSTRAINT FK_Employee_TO_CustomerEvaluation_1 FOREIGN KEY (evaluated_employee_id) REFERENCES employee (employee_id)
-);
-
-CREATE TABLE customer_evaluation_type (
-    evaluation_id INTEGER NOT NULL,
-    evaluation_type VARCHAR2(50) NOT NULL,
-    evaluation_content VARCHAR2(500) NULL,
-    CONSTRAINT PK_CUSTOMEREVALUATIONTYPE PRIMARY KEY (evaluation_id, evaluation_type),
-    CONSTRAINT FK_CustomerEvaluation_TO_CustomerEvaluationType_1 FOREIGN KEY (evaluation_id) REFERENCES customer_evaluation (evaluation_id)
+    CONSTRAINT FK_Employee_TO_CustomerEvaluation_1 FOREIGN KEY (evaluated_employee_id) REFERENCES employee (employee_id),
+    CONSTRAINT CK_CustomerEvaluation_Type CHECK (evaluation_type IN ('업무 수행평가', '커뮤니케이션 수행평가'))
 );
 
 -- 인센티브

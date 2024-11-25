@@ -73,12 +73,12 @@ def generate_insert_statements():
         
         # 20개의 프로젝트는 진행중이므로 end_date가 null
         # null 은 그냥 null 인데 어떻게 해야 할까
-        if project_id <= 14:
+        if project_id <= 15:
             start_date = fake.date_between(start_date='-5M', end_date='now')
             end_date = 'null'
         else:
             #단 현재보다 크면 안됨
-            start_date = fake.date_between(start_date='-6y', end_date='-5M')
+            start_date = fake.date_between(start_date='-5y', end_date='-5M')
             end_date = fake.date_between(start_date=start_date, end_date=start_date + timedelta(days=152)) # start_date부터 1년 사이
         
         project_data.append((project_id, customer_id, fake.sentence(), start_date, end_date))
@@ -197,10 +197,11 @@ def generate_insert_statements():
                         if project[0] == evaluated[1] and evaluator[0] != evaluated[0] and evaluator[0] != evaluated[0]: # 프로젝트에 참여한 직원에 대해서만 자신 빼고
                             score = random.randint(1, 10) # 1에서 10 사이의 점수
                             #fake 모듈을 사용하여 임의의 문자열을 넣는다
-                            peerEvaluation_data.append((peerEvaluation_id, project[0], evaluator[0], evaluated[0], score))
-                            peerEvaluationType_data.append((peerEvaluation_id, evaluation_types[0], fake.sentence()))
-                            peerEvaluationType_data.append((peerEvaluation_id, evaluation_types[1], fake.sentence()))
-                            peerEvaluation_id += 1
+                            peerEvaluation_data.append((peerEvaluation_id, project[0], evaluator[0], evaluated[0], score, evaluation_types[0], fake.sentence()))
+                            peerEvaluation_data.append((peerEvaluation_id+1, project[0], evaluator[0], evaluated[0], score, evaluation_types[1], fake.sentence()))
+                            # peerEvaluationType_data.append((peerEvaluation_id, evaluation_types[0], fake.sentence()))
+                            # peerEvaluationType_data.append((peerEvaluation_id, evaluation_types[1], fake.sentence()))
+                            peerEvaluation_id += 2
     
     # end_date 가 있는 프로젝트에 참여한 PM들이 다른 직원들에 대해 평가를 진행
     PMEvaluation_id = 1
@@ -211,10 +212,11 @@ def generate_insert_statements():
                     for evaluated in participationProject_data: # 모든 프로젝트 참여 데이터를 검사
                         if project[0] == evaluated[1] and evaluator[0] != evaluated[0] and evaluator[0] != evaluated[0]: # PM이면서 자신 빼고
                             score = random.randint(1, 10)
-                            PMEvaluation_data.append((PMEvaluation_id, project[0], evaluator[0], evaluated[0], score))
-                            PMEvaluationType_data.append((PMEvaluation_id, evaluation_types[0], fake.sentence()))
-                            PMEvaluationType_data.append((PMEvaluation_id, evaluation_types[1], fake.sentence()))
-                            PMEvaluation_id += 1
+                            PMEvaluation_data.append((PMEvaluation_id, project[0], evaluator[0], evaluated[0], score, evaluation_types[0], fake.sentence()))
+                            PMEvaluation_data.append((PMEvaluation_id+1, project[0], evaluator[0], evaluated[0], score, evaluation_types[1], fake.sentence()))
+                            # PMEvaluationType_data.append((PMEvaluation_id, evaluation_types[0], fake.sentence()))
+                            # PMEvaluationType_data.append((PMEvaluation_id, evaluation_types[1], fake.sentence()))
+                            PMEvaluation_id += 2
     
     # end_date 가 있는 프로젝트에 참여한 고객들이 다른 직원들에 대해 평가를 진행
     customerEvaluation_id = 1
@@ -225,73 +227,74 @@ def generate_insert_statements():
                     for evaluated in participationProject_data:
                         if project[0] == evaluated[1] and evaluator[0] != evaluated[0] and evaluator[0] != evaluated[0]:
                             score = random.randint(1, 10)
-                            customerEvaluation_data.append((customerEvaluation_id, project[0], evaluator[0], evaluated[0], score))
-                            customerEvaluationType_data.append((customerEvaluation_id, evaluation_types[0], fake.sentence()))
-                            customerEvaluationType_data.append((customerEvaluation_id, evaluation_types[1], fake.sentence()))
-                            customerEvaluation_id += 1   
+                            customerEvaluation_data.append((customerEvaluation_id, project[0], evaluator[0], evaluated[0], score, evaluation_types[0], fake.sentence()))
+                            customerEvaluation_data.append((customerEvaluation_id+1, project[0], evaluator[0], evaluated[0], score, evaluation_types[1], fake.sentence()))
+                            # customerEvaluationType_data.append((customerEvaluation_id, evaluation_types[0], fake.sentence()))
+                            # customerEvaluationType_data.append((customerEvaluation_id, evaluation_types[1], fake.sentence()))
+                            customerEvaluation_id += 2
     
     
     #####################################################
-    from datetime import datetime, date
-    from dateutil.relativedelta import relativedelta
-    from collections import defaultdict
+    # from datetime import datetime, date
+    # from dateutil.relativedelta import relativedelta
+    # from collections import defaultdict
 
-    def analyze_project_timeline(project_data):
-        """
-        Analyzes project data to count active projects per month from 2021-01 to current
+    # def analyze_project_timeline(project_data):
+    #     """
+    #     Analyzes project data to count active projects per month from 2021-01 to current
 
-        Args:
-            project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
-                         where dates are already datetime.date objects
+    #     Args:
+    #         project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
+    #                      where dates are already datetime.date objects
 
-        Returns:
-            List of tuples containing (year, month, project_count)
-        """
-        # Process projects (dates are already datetime.date objects)
-        processed_projects = []
-        for project in project_data:
-            start_date = project[3]  # Already a date object
-            end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
-            processed_projects.append((project[0], start_date, end_date))
+    #     Returns:
+    #         List of tuples containing (year, month, project_count)
+    #     """
+    #     # Process projects (dates are already datetime.date objects)
+    #     processed_projects = []
+    #     for project in project_data:
+    #         start_date = project[3]  # Already a date object
+    #         end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
+    #         processed_projects.append((project[0], start_date, end_date))
 
-        # Generate all months from 2021-01 to current
-        start_date = date(2021, 1, 1)
-        end_date = date(2024, 11, 1)  # Or use current date
+    #     # Generate all months from 2021-01 to current
+    #     start_date = date(2020, 1, 1)
+    #     end_date = date(2024, 11, 1)  # Or use current date
 
-        monthly_counts = []
-        current_date = start_date
+    #     monthly_counts = []
+    #     current_date = start_date
 
-        while current_date <= end_date:
-            # Count active projects for this month
-            active_projects = 0
-            month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
+    #     while current_date <= end_date:
+    #         # Count active projects for this month
+    #         active_projects = 0
+    #         month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
 
-            for project in processed_projects:
-                project_start = project[1]
-                project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
+    #         for project in processed_projects:
+    #             project_start = project[1]
+    #             project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
 
-                if project_start <= month_end and project_end >= current_date:
-                    active_projects += 1
+    #             if project_start <= month_end and project_end >= current_date:
+    #                 active_projects += 1
 
-            monthly_counts.append((
-                current_date.year,
-                current_date.month,
-                active_projects
-            ))
+    #         monthly_counts.append((
+    #             current_date.year,
+    #             current_date.month,
+    #             active_projects
+    #         ))
 
-            current_date += relativedelta(months=1)
+    #         current_date += relativedelta(months=1)
 
-        return monthly_counts
+    #     return monthly_counts
 
-    # Before printing INSERT statements:
-    print("\n=== Project Timeline Analysis ===")
-    print("Year | Month | Active Projects")
-    print("-" * 30)
-    for year, month, count in analyze_project_timeline(project_data):
-        print(f"{year:4d} | {month:5d} | {count:14d}")
-    print("\n=== Starting INSERT statements ===\n")
+    # # Before printing INSERT statements:
+    # print("\n=== Project Timeline Analysis ===")
+    # print("Year | Month | Active Projects")
+    # print("-" * 30)
+    # for year, month, count in analyze_project_timeline(project_data):
+    #     print(f"{year:4d} | {month:5d} | {count:14d}")
+    # print("\n=== Starting INSERT statements ===\n")
 
-    # Then continue with your INSERT statements...
+    # # Then continue with your INSERT statements...
     #####################################################
     
     #department table
@@ -299,7 +302,7 @@ def generate_insert_statements():
         print(f'INSERT INTO department (department_id, department_name) VALUES ({dept[0]}, \'{dept[1]}\');')
 
     for employee in employee_data:  # employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address
-        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address, login_id, login_passwd) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\', \'{employee[9]}\', \'{employee[10]}\');')
+        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address, username, passwd) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\', \'{employee[9]}\', \'{employee[10]}\');')
 
     for customer in customer_data:  # customer_id, customer_name, customer_email, customer_phone_number, customer_address
         print(f'INSERT INTO customer (customer_id, customer_name, customer_email, customer_phone_number, customer_address) VALUES ({customer[0]}, \'{customer[1]}\', \'{customer[2]}\', \'{customer[3]}\', \'{customer[4]}\');')
@@ -331,23 +334,33 @@ def generate_insert_statements():
     # customerEvaluation : evaluation_id, project_id, evaluator_id, evaluated_employee_id, score
     # customerEvaluationType : evaluation_id, evaluation_type, evaluation_content
     # print(peerEvaluation_data)
+    # for peerEvaluation in peerEvaluation_data:
+    #     print(f'INSERT INTO peer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({peerEvaluation[0]}, {peerEvaluation[1]}, {peerEvaluation[2]}, {peerEvaluation[3]}, {peerEvaluation[4]});')
+    # # print(peerEvaluationType_data)
+    # for peerEvaluationType in peerEvaluationType_data:
+    #     print(f'INSERT INTO peer_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({peerEvaluationType[0]}, \'{peerEvaluationType[1]}\', \'{peerEvaluationType[2]}\');')
+    # # print(PMEvaluation_data)
+    # for PMEvaluation in PMEvaluation_data:
+    #     print(f'INSERT INTO pm_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({PMEvaluation[0]}, {PMEvaluation[1]}, {PMEvaluation[2]}, {PMEvaluation[3]}, {PMEvaluation[4]});')
+    # # print(PMEvaluationType_data)
+    # for PMEvaluationType in PMEvaluationType_data:
+    #     print(f'INSERT INTO pm_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({PMEvaluationType[0]}, \'{PMEvaluationType[1]}\', \'{PMEvaluationType[2]}\');')
+    # # print(customerEvaluation_data)
+    # for customerEvaluation in customerEvaluation_data:
+    #     print(f'INSERT INTO customer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({customerEvaluation[0]}, {customerEvaluation[1]}, {customerEvaluation[2]}, {customerEvaluation[3]}, {customerEvaluation[4]});')
+    # # print(customerEvaluationType_data)
+    # for customerEvaluationType in customerEvaluationType_data:
+    #     print(f'INSERT INTO customer_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({customerEvaluationType[0]}, \'{customerEvaluationType[1]}\', \'{customerEvaluationType[2]}\');')    
+        
     for peerEvaluation in peerEvaluation_data:
-        print(f'INSERT INTO peer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({peerEvaluation[0]}, {peerEvaluation[1]}, {peerEvaluation[2]}, {peerEvaluation[3]}, {peerEvaluation[4]});')
-    # print(peerEvaluationType_data)
-    for peerEvaluationType in peerEvaluationType_data:
-        print(f'INSERT INTO peer_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({peerEvaluationType[0]}, \'{peerEvaluationType[1]}\', \'{peerEvaluationType[2]}\');')
-    # print(PMEvaluation_data)
+        print(f'INSERT INTO peer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score, evaluation_type, evaluation_content) VALUES ({peerEvaluation[0]}, {peerEvaluation[1]}, {peerEvaluation[2]}, {peerEvaluation[3]}, {peerEvaluation[4]}, \'{peerEvaluation[5]}\', \'{peerEvaluation[6]}\');')
+
     for PMEvaluation in PMEvaluation_data:
-        print(f'INSERT INTO pm_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({PMEvaluation[0]}, {PMEvaluation[1]}, {PMEvaluation[2]}, {PMEvaluation[3]}, {PMEvaluation[4]});')
-    # print(PMEvaluationType_data)
-    for PMEvaluationType in PMEvaluationType_data:
-        print(f'INSERT INTO pm_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({PMEvaluationType[0]}, \'{PMEvaluationType[1]}\', \'{PMEvaluationType[2]}\');')
-    # print(customerEvaluation_data)
+        print(f'INSERT INTO pm_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score, evaluation_type, evaluation_content) VALUES ({PMEvaluation[0]}, {PMEvaluation[1]}, {PMEvaluation[2]}, {PMEvaluation[3]}, {PMEvaluation[4]}, \'{PMEvaluation[5]}\', \'{PMEvaluation[6]}\');')
+
     for customerEvaluation in customerEvaluation_data:
-        print(f'INSERT INTO customer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score) VALUES ({customerEvaluation[0]}, {customerEvaluation[1]}, {customerEvaluation[2]}, {customerEvaluation[3]}, {customerEvaluation[4]});')
-    # print(customerEvaluationType_data)
-    for customerEvaluationType in customerEvaluationType_data:
-        print(f'INSERT INTO customer_evaluation_type (evaluation_id, evaluation_type, evaluation_content) VALUES ({customerEvaluationType[0]}, \'{customerEvaluationType[1]}\', \'{customerEvaluationType[2]}\');')    
+        print(f'INSERT INTO customer_evaluation (evaluation_id, project_id, evaluator_id, evaluated_employee_id, score, evaluation_type, evaluation_content) VALUES ({customerEvaluation[0]}, {customerEvaluation[1]}, {customerEvaluation[2]}, {customerEvaluation[3]}, {customerEvaluation[4]}, \'{customerEvaluation[5]}\', \'{customerEvaluation[6]}\');')    
+    
     # print(incentive_data)
     for seminar in seminar_data:
         print(f'INSERT INTO seminar (seminar_id, seminar_name, seminar_date, seminar_instructor) VALUES ({seminar[0]}, \'{seminar[1]}\', TO_DATE(\'{seminar[2]}\', \'YYYY-MM-DD\'), \'{seminar[3]}\');')
