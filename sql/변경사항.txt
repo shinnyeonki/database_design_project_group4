@@ -1,0 +1,10 @@
+pk 에 시퀀스를 추가하여 직접 pk 를 넣지 않고도 작동 가능하도록 바꾸었습니다
+모든 시퀀스는 10000 부터 시작합니다
+시퀀스(auto increment 관련 문서)
+https://luji.tistory.com/71
+
+
+로그인을 위해 id 와 password 를 생성하여 넣었습니다
+sample 데이터의 경우 id 의 경우 pk 그대로 사용하였고 비밀번호의 경우 1111 입니다
+로그인 id 의 경우 unique 입니다
+

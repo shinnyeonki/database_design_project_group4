@@ -1,6 +1,5 @@
 # 미리 data를 생성하여 리스트에 각 속성별로 집어넣고 나중에 한번에 insert문을 출력하는 방식으로 진행
 # 개선할 점, 날짜 속성의 경우 그냥 python 에 Date type 을 사용하는 것이 이후에 좋을 것 같다
-# contract table 다시 만들어 보자
 
 
 import random
@@ -57,11 +56,11 @@ def generate_insert_statements():
         if employee_id <= 66: #개발자
             dept_id = 4  # 개발 부서
             registration_number = generate_registration_number()
-            employee_data.append((employee_id, dept_id, fake.name(), registration_number, random.choice(education_level), random.choice(skill_sets), fake.email(), generate_phone_number(), fake.address()))
+            employee_data.append((employee_id, dept_id, fake.name(), registration_number, random.choice(education_level), random.choice(skill_sets), fake.email(), generate_phone_number(), fake.address(), employee_id, "1111"))
         else: #마케팅, 경영관리, 연구개발, 인사, 영업, 디자인
             dept_id = (employee_id % 7) + 1  # 나머지 부서 4:개발 부서또한 선택될 수 있음
             registration_number = generate_registration_number()
-            employee_data.append((employee_id, dept_id, fake.name(), registration_number, random.choice(education_level), random.choice(skill_sets), fake.email(), generate_phone_number(), fake.address()))
+            employee_data.append((employee_id, dept_id, fake.name(), registration_number, random.choice(education_level), random.choice(skill_sets), fake.email(), generate_phone_number(), fake.address(), employee_id, "1111"))
             
 
     for customer_id in range(1, 101):# 100명의 고객
@@ -69,12 +68,12 @@ def generate_insert_statements():
     
 
 
-    for project_id in range(1, 221): # 00개의 프로젝트 생성
+    for project_id in range(1, 201): # 100개의 프로젝트 생성
         customer_id = random.randint(1, 100)
         
         # 20개의 프로젝트는 진행중이므로 end_date가 null
         # null 은 그냥 null 인데 어떻게 해야 할까
-        if project_id <= 13:
+        if project_id <= 15:
             start_date = fake.date_between(start_date='-5M', end_date='now')
             end_date = 'null'
         else:
@@ -91,7 +90,7 @@ def generate_insert_statements():
         projcet_PM = random.choice([employee for employee in employee_data if employee[1] == 4])
         participationProject_data.append((projcet_PM[0], project[0], project[3], project[4], 'PM'))
         
-    for participationProject_id in range(1, 801):  # 500개의 프로젝트 참여 데이터 생성
+    for participationProject_id in range(1, 501):  # 500개의 프로젝트 참여 데이터 생성
         while True:  # 중복이 발생하지 않을 때까지 반복
             employee = random.choice(employee_data)
             project = random.choice(project_data)  # 아무거나 골라
@@ -134,7 +133,7 @@ def generate_insert_statements():
         for participation in participationProject_data:
             if project[0] == participation[1] and project[4] != 'null':
                 # start_date 가 2년전 까지만 인센티브 지급
-                if participation[2] >= (fake.date_between(start_date='-6y', end_date='now')):
+                if participation[2] >= (fake.date_between(start_date='-2y', end_date='now')):
                     incentive_amount = random.randint(1, 11) * 100000
                     incentive_data.append((project[0], participation[0], incentive_amount))
                     
@@ -232,13 +231,75 @@ def generate_insert_statements():
                             customerEvaluation_id += 1   
     
     
+    #####################################################
+    # from datetime import datetime, date
+    # from dateutil.relativedelta import relativedelta
+    # from collections import defaultdict
+
+    # def analyze_project_timeline(project_data):
+    #     """
+    #     Analyzes project data to count active projects per month from 2021-01 to current
+
+    #     Args:
+    #         project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
+    #                      where dates are already datetime.date objects
+
+    #     Returns:
+    #         List of tuples containing (year, month, project_count)
+    #     """
+    #     # Process projects (dates are already datetime.date objects)
+    #     processed_projects = []
+    #     for project in project_data:
+    #         start_date = project[3]  # Already a date object
+    #         end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
+    #         processed_projects.append((project[0], start_date, end_date))
+
+    #     # Generate all months from 2021-01 to current
+    #     start_date = date(2021, 1, 1)
+    #     end_date = date(2024, 11, 1)  # Or use current date
+
+    #     monthly_counts = []
+    #     current_date = start_date
+
+    #     while current_date <= end_date:
+    #         # Count active projects for this month
+    #         active_projects = 0
+    #         month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
+
+    #         for project in processed_projects:
+    #             project_start = project[1]
+    #             project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
+
+    #             if project_start <= month_end and project_end >= current_date:
+    #                 active_projects += 1
+
+    #         monthly_counts.append((
+    #             current_date.year,
+    #             current_date.month,
+    #             active_projects
+    #         ))
+
+    #         current_date += relativedelta(months=1)
+
+    #     return monthly_counts
+
+    # # Before printing INSERT statements:
+    # print("\n=== Project Timeline Analysis ===")
+    # print("Year | Month | Active Projects")
+    # print("-" * 30)
+    # for year, month, count in analyze_project_timeline(project_data):
+    #     print(f"{year:4d} | {month:5d} | {count:14d}")
+    # print("\n=== Starting INSERT statements ===\n")
+
+    # # Then continue with your INSERT statements...
+    #####################################################
     
     #department table
     for dept in department_data:  # department_id, department_name, department_number
         print(f'INSERT INTO department (department_id, department_name) VALUES ({dept[0]}, \'{dept[1]}\');')
 
     for employee in employee_data:  # employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address
-        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\');')
+        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address, username, passwd) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\', \'{employee[9]}\', \'{employee[10]}\');')
 
     for customer in customer_data:  # customer_id, customer_name, customer_email, customer_phone_number, customer_address
         print(f'INSERT INTO customer (customer_id, customer_name, customer_email, customer_phone_number, customer_address) VALUES ({customer[0]}, \'{customer[1]}\', \'{customer[2]}\', \'{customer[3]}\', \'{customer[4]}\');')
@@ -294,6 +355,28 @@ def generate_insert_statements():
     for seminarParticipation in seminarParticipation_data:
         print(f'INSERT INTO seminar_participation (seminar_id, employee_id) VALUES ({seminarParticipation[0]}, {seminarParticipation[1]});')
     print('COMMIT;')
+    
+    
+    # # 직원 table
+    # print('CREATE SEQUENCE employee_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # 고객 table
+    # print('CREATE SEQUENCE customer_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # project table
+    # print('CREATE SEQUENCE project_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # contract table
+    # print('CREATE SEQUENCE contract_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # salary table
+    # print('CREATE SEQUENCE salary_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # peer_evaluation table
+    # print('CREATE SEQUENCE peer_evaluation_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # pm_evaluation table
+    # print('CREATE SEQUENCE pm_evaluation_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # customer_evaluation table
+    # print('CREATE SEQUENCE customer_evaluation_id_seq START WITH 1000 INCREMENT BY 1;')
+    # # seminar table
+    # print('CREATE SEQUENCE seminar_id_seq START WITH 1000 INCREMENT BY 1;')
+    
+    
     
 
 

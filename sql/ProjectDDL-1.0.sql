@@ -5,8 +5,10 @@ CREATE TABLE department (
     CONSTRAINT CK_Department_department_name CHECK (department_name IN ('마케팅', '경영관리', '연구개발', '개발', '인사', '영업', '디자인'))
 );
 
+
+
 CREATE TABLE employee (
-    employee_id INTEGER NOT NULL,
+    employee_id INTEGER NOT NULL, -- auto increment
     department_id INTEGER NOT NULL,
     employee_name VARCHAR2(30) NOT NULL,
     registration_number VARCHAR2(14) NOT NULL, -- 정말 varchar2로 할 것인가
@@ -15,13 +17,16 @@ CREATE TABLE employee (
     employee_email VARCHAR2(50) NULL,
     employee_phone_number VARCHAR2(20) NULL,
     employee_address VARCHAR2(100) NULL,
+    username VARCHAR2(30) NOT NULL UNIQUE, -- 로그인 ID UNIQUE
+    passwd VARCHAR2(255) NOT NULL, -- 암호화된 비밀번호
     CONSTRAINT PK_EMPLOYEE PRIMARY KEY (employee_id),
     CONSTRAINT FK_Department_TO_Employee_1 FOREIGN KEY (department_id) REFERENCES department (department_id)
 );
 
+
 CREATE TABLE customer (
-    customer_id INTEGER NOT NULL,
-    customer_name VARCHAR2(30) NOT NULL,
+    customer_id INTEGER NOT NULL, -- auto increment
+    customer_name VARCHAR2(30) NOT NULL,  
     customer_email VARCHAR2(50) NULL,
     customer_phone_number VARCHAR2(20) NULL,
     customer_address VARCHAR2(100) NULL,
@@ -29,7 +34,7 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE project (
-    project_id INTEGER NOT NULL,
+    project_id INTEGER NOT NULL,   -- auto increment
     customer_id INTEGER NOT NULL,
     project_name VARCHAR2(100) NOT NULL,
     start_date DATE NOT NULL,
@@ -40,7 +45,7 @@ CREATE TABLE project (
 );
 
 CREATE TABLE participation_project (
-    employee_id INTEGER NOT NULL,
+    employee_id INTEGER NOT NULL,   
     project_id INTEGER NOT NULL,
     start_date DATE NOT NULL, -- 트리거를 사용하여 프로젝트 시작일보다 커야 한다?
     end_date DATE NULL,
@@ -53,7 +58,7 @@ CREATE TABLE participation_project (
 );
 
 CREATE TABLE contract (
-    contract_id INTEGER NOT NULL,
+    contract_id INTEGER NOT NULL,  -- auto increment
     employee_id INTEGER NOT NULL,
     annual_salary INTEGER NOT NULL,
     contract_date DATE NOT NULL,
@@ -62,7 +67,7 @@ CREATE TABLE contract (
 );
 
 CREATE TABLE salary (
-    salary_id INTEGER NOT NULL,
+    salary_id INTEGER NOT NULL,  -- auto increment
     employee_id INTEGER NOT NULL,
     contract_id INTEGER NOT NULL,
     base_salary INTEGER NOT NULL,
@@ -75,7 +80,7 @@ CREATE TABLE salary (
 
 -- 동료 평가, PM 평가, 고객 평가
 CREATE TABLE peer_evaluation (
-    evaluation_id INTEGER NOT NULL,
+    evaluation_id INTEGER NOT NULL,   -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
@@ -96,7 +101,7 @@ CREATE TABLE peer_evaluation_type (
 );
 
 CREATE TABLE pm_evaluation (
-    evaluation_id INTEGER NOT NULL,
+    evaluation_id INTEGER NOT NULL,   -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
@@ -108,7 +113,7 @@ CREATE TABLE pm_evaluation (
 );
 
 CREATE TABLE pm_evaluation_type (
-    evaluation_id INTEGER NOT NULL,
+    evaluation_id INTEGER NOT NULL, 
     evaluation_type VARCHAR2(50) NOT NULL,
     evaluation_content VARCHAR2(500) NULL,
     CONSTRAINT PK_PMEVALUATIONTYPE PRIMARY KEY (evaluation_id, evaluation_type),
@@ -116,7 +121,7 @@ CREATE TABLE pm_evaluation_type (
 );
 
 CREATE TABLE customer_evaluation (
-    evaluation_id INTEGER NOT NULL,
+    evaluation_id INTEGER NOT NULL,   -- auto increment
     project_id INTEGER NOT NULL,
     evaluator_id INTEGER NOT NULL,
     evaluated_employee_id INTEGER NOT NULL,
@@ -137,7 +142,7 @@ CREATE TABLE customer_evaluation_type (
 
 -- 인센티브
 CREATE TABLE incentive (
-    project_id INTEGER NOT NULL,
+    project_id INTEGER NOT NULL,   
     employee_id INTEGER NOT NULL,
     incentive_amount INTEGER NOT NULL,
     CONSTRAINT PK_INCENTIVE PRIMARY KEY (project_id, employee_id),
@@ -147,7 +152,7 @@ CREATE TABLE incentive (
 
 -- 세미나, 세미나 참여
 CREATE TABLE seminar (
-    seminar_id INTEGER NOT NULL,
+    seminar_id INTEGER NOT NULL,   -- auto increment
     seminar_name VARCHAR2(100) NOT NULL,
     seminar_date DATE NOT NULL,
     seminar_instructor VARCHAR2(100) NOT NULL,
@@ -164,3 +169,14 @@ CREATE TABLE seminar_participation (
 
 COMMENT ON TABLE participation_project IS '프로젝트 참여 테이블';
 COMMENT ON COLUMN participation_project.start_date IS 'check를 사용하여 프로젝트 시작일보다 커야 하고 종료일보다 작아야 한다';
+
+-- 시퀀스 생성
+CREATE SEQUENCE employee_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE customer_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE project_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE contract_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE salary_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE peer_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE pm_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE customer_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE seminar_id_seq START WITH 10000 INCREMENT BY 1;
