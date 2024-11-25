@@ -25,6 +25,7 @@ if __name__ == '__main__':
     #블루 프린트 설정
     import views
     import test_views
+    app.secret_key= os.urandom(24)
     views.enroll_connection(connection) # 연결 설정
     app.register_blueprint(views.main) #  main 블루프린트를 애플리케이션에 등록
     test_views.enroll_connection(connection) # 연결 설정
