@@ -130,6 +130,7 @@
                 <th>주소</th>
                 <th>전화번호</th>
                 <th>이메일</th>
+                <th>수정/삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -141,6 +142,16 @@
                     <td>{{ employee[3] }}</td>
                     <td>{{ employee[4] }}</td>
                     <td>{{ employee[5] }}</td>
+                    <td>
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="edit_employee_id" value="{{ employee[0] }}">
+                            <input type="submit" name="fetch_employee" value="수정">
+                        </form>
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="employee_id" value="{{ employee[0] }}">
+                            <input type="submit" name="delete_employee" value="삭제">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
