@@ -17,8 +17,8 @@ CREATE TABLE employee (
     employee_email VARCHAR2(50) NULL,
     employee_phone_number VARCHAR2(20) NULL,
     employee_address VARCHAR2(100) NULL,
-    username VARCHAR2(30) NOT NULL UNIQUE, -- 로그인 ID UNIQUE
-    passwd VARCHAR2(255) NOT NULL, -- 암호화된 비밀번호
+    login_id VARCHAR2(30) NOT NULL UNIQUE, -- 로그인 ID UNIQUE
+    login_passwd VARCHAR2(255) NOT NULL, -- 암호화된 비밀번호
     CONSTRAINT PK_EMPLOYEE PRIMARY KEY (employee_id),
     CONSTRAINT FK_Department_TO_Employee_1 FOREIGN KEY (department_id) REFERENCES department (department_id)
 );

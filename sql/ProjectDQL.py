@@ -73,12 +73,12 @@ def generate_insert_statements():
         
         # 20개의 프로젝트는 진행중이므로 end_date가 null
         # null 은 그냥 null 인데 어떻게 해야 할까
-        if project_id <= 15:
+        if project_id <= 14:
             start_date = fake.date_between(start_date='-5M', end_date='now')
             end_date = 'null'
         else:
             #단 현재보다 크면 안됨
-            start_date = fake.date_between(start_date='-5y', end_date='-5M')
+            start_date = fake.date_between(start_date='-6y', end_date='-5M')
             end_date = fake.date_between(start_date=start_date, end_date=start_date + timedelta(days=152)) # start_date부터 1년 사이
         
         project_data.append((project_id, customer_id, fake.sentence(), start_date, end_date))
@@ -232,66 +232,66 @@ def generate_insert_statements():
     
     
     #####################################################
-    # from datetime import datetime, date
-    # from dateutil.relativedelta import relativedelta
-    # from collections import defaultdict
+    from datetime import datetime, date
+    from dateutil.relativedelta import relativedelta
+    from collections import defaultdict
 
-    # def analyze_project_timeline(project_data):
-    #     """
-    #     Analyzes project data to count active projects per month from 2021-01 to current
+    def analyze_project_timeline(project_data):
+        """
+        Analyzes project data to count active projects per month from 2021-01 to current
 
-    #     Args:
-    #         project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
-    #                      where dates are already datetime.date objects
+        Args:
+            project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
+                         where dates are already datetime.date objects
 
-    #     Returns:
-    #         List of tuples containing (year, month, project_count)
-    #     """
-    #     # Process projects (dates are already datetime.date objects)
-    #     processed_projects = []
-    #     for project in project_data:
-    #         start_date = project[3]  # Already a date object
-    #         end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
-    #         processed_projects.append((project[0], start_date, end_date))
+        Returns:
+            List of tuples containing (year, month, project_count)
+        """
+        # Process projects (dates are already datetime.date objects)
+        processed_projects = []
+        for project in project_data:
+            start_date = project[3]  # Already a date object
+            end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
+            processed_projects.append((project[0], start_date, end_date))
 
-    #     # Generate all months from 2021-01 to current
-    #     start_date = date(2021, 1, 1)
-    #     end_date = date(2024, 11, 1)  # Or use current date
+        # Generate all months from 2021-01 to current
+        start_date = date(2021, 1, 1)
+        end_date = date(2024, 11, 1)  # Or use current date
 
-    #     monthly_counts = []
-    #     current_date = start_date
+        monthly_counts = []
+        current_date = start_date
 
-    #     while current_date <= end_date:
-    #         # Count active projects for this month
-    #         active_projects = 0
-    #         month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
+        while current_date <= end_date:
+            # Count active projects for this month
+            active_projects = 0
+            month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
 
-    #         for project in processed_projects:
-    #             project_start = project[1]
-    #             project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
+            for project in processed_projects:
+                project_start = project[1]
+                project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
 
-    #             if project_start <= month_end and project_end >= current_date:
-    #                 active_projects += 1
+                if project_start <= month_end and project_end >= current_date:
+                    active_projects += 1
 
-    #         monthly_counts.append((
-    #             current_date.year,
-    #             current_date.month,
-    #             active_projects
-    #         ))
+            monthly_counts.append((
+                current_date.year,
+                current_date.month,
+                active_projects
+            ))
 
-    #         current_date += relativedelta(months=1)
+            current_date += relativedelta(months=1)
 
-    #     return monthly_counts
+        return monthly_counts
 
-    # # Before printing INSERT statements:
-    # print("\n=== Project Timeline Analysis ===")
-    # print("Year | Month | Active Projects")
-    # print("-" * 30)
-    # for year, month, count in analyze_project_timeline(project_data):
-    #     print(f"{year:4d} | {month:5d} | {count:14d}")
-    # print("\n=== Starting INSERT statements ===\n")
+    # Before printing INSERT statements:
+    print("\n=== Project Timeline Analysis ===")
+    print("Year | Month | Active Projects")
+    print("-" * 30)
+    for year, month, count in analyze_project_timeline(project_data):
+        print(f"{year:4d} | {month:5d} | {count:14d}")
+    print("\n=== Starting INSERT statements ===\n")
 
-    # # Then continue with your INSERT statements...
+    # Then continue with your INSERT statements...
     #####################################################
     
     #department table
@@ -299,7 +299,7 @@ def generate_insert_statements():
         print(f'INSERT INTO department (department_id, department_name) VALUES ({dept[0]}, \'{dept[1]}\');')
 
     for employee in employee_data:  # employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address
-        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address, username, passwd) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\', \'{employee[9]}\', \'{employee[10]}\');')
+        print(f'INSERT INTO employee (employee_id, department_id, employee_name, registration_number, education_level, skill_set, employee_email, employee_phone_number, employee_address, login_id, login_passwd) VALUES ({employee[0]}, {employee[1]}, \'{employee[2]}\', \'{employee[3]}\', \'{employee[4]}\', \'{employee[5]}\', \'{employee[6]}\', \'{employee[7]}\', \'{employee[8]}\', \'{employee[9]}\', \'{employee[10]}\');')
 
     for customer in customer_data:  # customer_id, customer_name, customer_email, customer_phone_number, customer_address
         print(f'INSERT INTO customer (customer_id, customer_name, customer_email, customer_phone_number, customer_address) VALUES ({customer[0]}, \'{customer[1]}\', \'{customer[2]}\', \'{customer[3]}\', \'{customer[4]}\');')
