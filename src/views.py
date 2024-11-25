@@ -1,10 +1,5 @@
 from flask import Blueprint, render_template
 
-connection = None
-def enroll_connection(conn):
-    global connection
-    connection = conn
-
 main = Blueprint('main', __name__)
 
 @main.route('/')

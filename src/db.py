@@ -19,7 +19,7 @@ def init_db(app):
     def create_db_connection():
         # 공용 DB 사용할 때
         g.db = cx_Oracle.connect(user="db_project_group4", password="1111", dsn="shinnk.iptime.org:11522/XE")
-        # 개별 DB 사용할 때
+        # 개인 DB 사용할 때
         # g.db = cx_Oracle.connect(user="class_c", password="????", dsn="localhost/XE")
 
     @app.teardown_request
