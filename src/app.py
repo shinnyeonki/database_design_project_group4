@@ -22,7 +22,5 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    if os.name == 'nt':
-        app.run(debug=False, port=5010)
-    else:
-        app.run(debug=True, port=5010)
+
+    app.run(debug=True, port=5010)
