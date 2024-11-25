@@ -13,9 +13,9 @@ def create_app():
 
     
     # Register blueprints
-    import views
+    import main_views
     import test_views
-    app.register_blueprint(views.main)
+    app.register_blueprint(main_views.main)
     app.register_blueprint(test_views.test)
 
     return app
