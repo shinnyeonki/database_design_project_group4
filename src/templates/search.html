@@ -6,14 +6,12 @@
     <div class="search-employee" id="section">
         <h3>직원 검색</h3>
         <form method="POST">
-            <label for="search_name">이름 으로 검색:</label>
+            <label for="search_name">이름으로 검색:</label>
             <input type="text" id="search_name" name="search_name">
-            <lable for="search_department">부서 이름으로 검색:</lable>
+            <label for="search_department">부서 이름으로 검색:</label>
             <input type="text" id="search_department" name="search_department">
-            <lable for="search_position">직급으로 검색:</lable>
+            <label for="search_position">직급으로 검색:</label>
             <input type="text" id="search_position" name="search_position">
-            <lable for="search_login_id">login id 로 검색</lable>
-            <input type="text" id="search_salary" name="search_salary">
             <br><br>
             <input type="submit" name="search_employee" value="검색">
         </form>
@@ -23,11 +21,11 @@
         <table>
             <thead>
                 <tr>
-                    <th> 직원 login id</th>
-                    <th> 직원 이름</th>
-                    <th> 부서 이름</th>
-                    <th> 현재 참여하고 있는 프로젝트 개수</th>
-                    <th> 세부정보</th>
+                    <th>직원 login ID</th>
+                    <th>직원 이름</th>
+                    <th>부서 이름</th>
+                    <th>현재 참여 프로젝트 수</th>
+                    <th>세부정보</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,28 +85,28 @@
         #employeeModal {
             position: fixed;
             z-index: 1000;
-            inset: 0; /* 모든 면을 0으로 설정하여 화면 전체를 덮음 */
-            background-color: rgba(0, 0, 0, 0.7); /* 배경을 어둡게 설정 */
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
-            justify-content: center; /* 수평 중앙 정렬 */
-            align-items: center; /* 수직 중앙 정렬 */
+            justify-content: center;
+            align-items: center;
         }
         
         #employeeModal .modal-content {
-            background-color: white; /* 모달의 배경색 */
-            border-radius: 8px; /* 모서리 둥글게 */
-            padding: 20px; /* 내부 여백 */
-            width: 90%; /* 너비를 90%로 설정 */
-            max-width: 600px; /* 최대 너비를 설정하여 너무 커지지 않도록 함 */
-            max-height: 90vh; /* 최대 높이를 뷰포트 높이의 90%로 설정 */
-            overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤 가능 */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
-            position: relative; /* Relative로 위치 설정 */
-            transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
-            top: 50%; /* 세로 중앙 위치 */
-            left: 50%; /* 가로 중앙 위치 */
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
         }
-              /* Close button styling */
+        
         #employeeModal .close {
             position: absolute;
             top: 10px;
@@ -123,7 +121,6 @@
             color: #ff0000;
         }
 
-        /* Typography */
         #employeeModal h2 {
             margin-top: 0;
             font-size: 24px;
@@ -139,8 +136,6 @@
         #employeeModal p strong {
             color: #000;
         }
-        
-      </style>
-      
+    </style>
     {% endif %}
 {% endblock %}

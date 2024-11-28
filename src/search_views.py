@@ -7,8 +7,7 @@ def get_search_params():
     return {
         'search_name': request.form.get('search_name'),
         'search_department': request.form.get('search_department'),
-        'search_position': request.form.get('search_position'),
-        'search_login_id': request.form.get('search_login_id')
+        'search_position': request.form.get('search_position')
     }
 
 def build_search_query(params):
@@ -32,9 +31,6 @@ def build_search_query(params):
     if params['search_position']:
         query += " AND pp.role LIKE :role"
         bind_params['role'] = f"%{params['search_position']}%"
-    if params['search_login_id']:
-        query += " AND e.username LIKE :username"
-        bind_params['username'] = f"%{params['search_login_id']}%"
     query += " GROUP BY e.username, e.employee_name, d.department_name"
     return query, bind_params
 
