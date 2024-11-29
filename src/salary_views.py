@@ -48,14 +48,13 @@ def search_employee():
     cursor = g.db.cursor()
     search_id = request.form['search_id'].strip()
     cursor.execute("""
-        SELECT employee_id, employee_name, salary_id, contract_id, monthly_salary
-        FROM employee JOIN salary
-        ON employee.employee_id = salary.employee_id
-        WHERE employee_id LIKE :search_id
-        ORDER BY employee_id
-    """, {'search_name': f'%{search_id}%'})
+        SELECT e.employee_id, e.employee_name, s.salary_id, s.contract_id, s.monthly_salary
+        FROM employee e JOIN salary s ON e.employee_id = s.employee_id
+        WHERE e.employee_id = :search_id
+        ORDER BY e.employee_id
+    """, {'search_id': search_id})  # 정확히 일치하는 ID를 찾기 위해 '=' 사용
     employees = cursor.fetchall()
-    flash(f"Found employees matching '{search_id}'", 'success')
+    flash(f"Found employee with ID '{search_id}'", 'success')
     return employees
 
 def join_employee_salary():
