@@ -85,6 +85,7 @@ def fetch_employee_detail(employee_id):
             e.employee_phone_number, 
             e.employee_address,
             (SELECT c.annual_salary FROM contract c WHERE c.employee_id = e.employee_id ORDER BY c.contract_date DESC FETCH FIRST 1 ROWS ONLY) AS current_salary
+            WHERE c.employee_id = e.employee_id AND c.contract_date >= ADD_MONTHS(SYSDATE, -6)) AS last_6_months_salaries
         FROM employee e
         JOIN department d ON e.department_id = d.department_id
         WHERE e.username = :username
