@@ -20,7 +20,7 @@ def create_app():
     import search_views
     app.register_blueprint(main_views.main)
     app.register_blueprint(test_views.test)
-    # app.register_blueprint(sign_views.sign)
+    app.register_blueprint(sign_views.sign)
     # app.register_blueprint(salary_views.salary)
     app.register_blueprint(search_views.search_em)
     
