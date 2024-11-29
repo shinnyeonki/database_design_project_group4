@@ -4,7 +4,7 @@
 
 import random
 import faker 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 fake = faker.Faker("ko_KR")
 
@@ -132,35 +132,71 @@ def generate_insert_statements():
     for project in project_data:
         for participation in participationProject_data:
             if project[0] == participation[1] and project[4] != 'null':
-                # start_date 가 2년전 까지만 인센티브 지급
-                if participation[2] >= (fake.date_between(start_date='-2y', end_date='now')):
+                # start_date 가 5개월전 까지만 인센티브 지급
+                if participation[2] >= (fake.date_between(start_date='-5M', end_date='now')):
                     incentive_amount = random.randint(1, 11) * 100000
                     incentive_data.append((project[0], participation[0], incentive_amount))
                     
         
     
+    # contract_id = 1
+    # for employee in employee_data:
+    #     for _ in range(1, random.randint(1, 11)):  # 1에서 10 사이의 계약 수
+    #         annual_salary = random.randint(3000, 10000) * 10000  # 연봉 생성
+    #         year_offset = random.randint(0, 5)  # 0년에서 5년 사이의 오프셋
+    #         contract_date = generate_december_contract_date(year_offset)  # 계약 날짜 생성
+    #         # 계약 데이터 추가
+    #         contract_data.append((contract_id, employee[0], annual_salary, contract_date))  # (contract_id, employee_id, contract_date, annual_salary)
+    #         # 월급 데이터 생성 (12개월)
+    #         base_salary = annual_salary / 12  # 월급 계산
+    #         for month in range(1, 13):  # 1부터 12까지 월급 정보 생성
+    #             salary_id = len(salary_data) + 1  # salary_id는 리스트의 길이를 기반으로 생성
+    #             year = int(contract_date[:4])
+    #             salary_date = f"{year + 1}-{month:02d}-10"  # 계약 날짜 생성
+    #             # 만약 인센티브가 있는 경우 base_salary에 인센티브 amount 를 추가해서 monthly_salary로 설정
+    #             monthly_salary = 0
+    #             for incentive in incentive_data:
+    #                 if incentive[0] == employee[0]:
+    #                     monthly_salary = base_salary + incentive[2]
+    #             salary_data.append((salary_id, employee[0], contract_id, base_salary, monthly_salary, salary_date))  # (salary_id, employee_id, contract_id, base_salary, monthly_salary)
+    #         contract_id += 1  # 계약 ID 증가
+
     contract_id = 1
+    salary_id = 1
+    current_date = datetime.now().date()
     for employee in employee_data:
-        for _ in range(1, random.randint(1, 11)):  # 1에서 10 사이의 계약 수
-            annual_salary = random.randint(3000, 10000) * 10000  # 연봉 생성
-            year_offset = random.randint(0, 5)  # 0년에서 5년 사이의 오프셋
-            contract_date = generate_december_contract_date(year_offset)  # 계약 날짜 생성
+        # 직원의 최초 프로젝트 참여일자 찾기
+        participation_dates = [pd[2] for pd in participationProject_data if pd[0] == employee[0]]
+        if not participation_dates:
+            continue  # 프로젝트 참여 기록이 없으면 건너뜁니다
+        first_participation_date = min(participation_dates)
+        first_year = first_participation_date.year
+        for year in range(first_year, datetime.now().year+1):
+            # 계약 날짜는 해당 해의 이전해 12월 10일
+            contract_date = f"{year - 1}/12/10"
+            # 연봉 생성
+            annual_salary = random.randint(3000, 10000) * 10000
             # 계약 데이터 추가
-            contract_data.append((contract_id, employee[0], annual_salary, contract_date))  # (contract_id, employee_id, contract_date, annual_salary)
-            # 월급 데이터 생성 (12개월)
-            base_salary = annual_salary / 12  # 월급 계산
-            for month in range(1, 13):  # 1부터 12까지 월급 정보 생성
-                salary_id = len(salary_data) + 1  # salary_id는 리스트의 길이를 기반으로 생성
-                year = int(contract_date[:4])
-                salary_date = f"{year + 1}-{month:02d}-10"  # 계약 날짜 생성
-                # 만약 인센티브가 있는 경우 base_salary에 인센티브 amount 를 추가해서 monthly_salary로 설정
-                monthly_salary = 0
-                for incentive in incentive_data:
-                    if incentive[0] == employee[0]:
-                        monthly_salary = base_salary + incentive[2]
-                salary_data.append((salary_id, employee[0], contract_id, base_salary, monthly_salary, salary_date))  # (salary_id, employee_id, contract_id, base_salary, monthly_salary)
-            contract_id += 1  # 계약 ID 증가
-    
+            contract_data.append((contract_id, employee[0], annual_salary, contract_date))
+            # 첫 해는 계약 다음 해부터 월급 지급
+            if year == first_year:
+                contract_id += 1
+                continue
+            # 월급 데이터 생성
+            base_salary = annual_salary / 12
+            for month in range(1, 13):
+                salary_date_str = f"{year}/{month:02d}/20"
+                salary_date = datetime.strptime(salary_date_str, "%Y/%m/%d").date()
+                if salary_date > current_date:
+                    continue  # 현재 날짜보다 크면 넘어감
+                # 인센티브 설정
+                incentive_amount = random.randint(3, 11) * 100000 if random.random() < 0.5 else 0
+                monthly_salary = base_salary + incentive_amount
+                salary_data.append((salary_id, employee[0], contract_id, base_salary, monthly_salary, salary_date_str))
+                salary_id += 1
+            contract_id += 1
+
+
     
     #seminar table
     for seminar_id in range(1, 101):  # 100개의 세미나 생성
@@ -235,7 +271,6 @@ def generate_insert_statements():
     
     
     #####################################################
-    # from datetime import datetime, date
     # from dateutil.relativedelta import relativedelta
     # from collections import defaultdict
 

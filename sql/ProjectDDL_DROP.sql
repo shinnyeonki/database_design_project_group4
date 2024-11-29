@@ -33,3 +33,8 @@ DROP SEQUENCE contract_id_seq;
 DROP SEQUENCE project_id_seq;
 DROP SEQUENCE customer_id_seq;
 DROP SEQUENCE employee_id_seq;
+
+DROP MATERIALIZED VIEW employee_search_mv;
+DROP INDEX idx_department_name;
+DROP INDEX idx_employee_name;
+

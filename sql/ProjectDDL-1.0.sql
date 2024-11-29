@@ -167,3 +167,20 @@ CREATE SEQUENCE peer_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
 CREATE SEQUENCE pm_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
 CREATE SEQUENCE customer_evaluation_id_seq START WITH 10000 INCREMENT BY 1;
 CREATE SEQUENCE seminar_id_seq START WITH 10000 INCREMENT BY 1;
+
+-- mview 생성
+CREATE MATERIALIZED VIEW employee_search_mv
+AS
+SELECT e.username,
+       e.employee_name,
+       d.department_name,
+       COUNT(pp.project_id) AS current_projects
+FROM employee e
+JOIN department d ON e.department_id = d.department_id
+LEFT JOIN participation_project pp ON e.employee_id = pp.employee_id AND pp.end_date IS NULL
+GROUP BY e.username, e.employee_name, d.department_name;
+
+
+-- index 설정
+CREATE INDEX idx_department_name ON department (department_name);
+CREATE INDEX idx_employee_name ON employee(employee_name);
