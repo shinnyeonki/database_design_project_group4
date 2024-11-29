@@ -75,22 +75,35 @@ def execute_query(query, params):
 def fetch_employee_detail(employee_id):
     cursor = g.db.cursor()
     cursor.execute("""
-        SELECT e.username,
+        SELECT 
+            e.username,
             e.employee_name,
             d.department_name,
             (SELECT COUNT(*) FROM participation_project pp WHERE pp.employee_id = e.employee_id) AS project_count,
-            e.education_level, 
-            e.skill_set, 
-            e.employee_email, 
-            e.employee_phone_number, 
+            e.education_level,
+            e.skill_set,
+            e.employee_email,
+            e.employee_phone_number,
             e.employee_address,
-            (SELECT c.annual_salary FROM contract c WHERE c.employee_id = e.employee_id ORDER BY c.contract_date DESC FETCH FIRST 1 ROWS ONLY) AS current_salary
-            WHERE c.employee_id = e.employee_id AND c.contract_date >= ADD_MONTHS(SYSDATE, -6)) AS last_6_months_salaries
+            (SELECT c.annual_salary 
+             FROM contract c 
+             WHERE c.employee_id = e.employee_id 
+             ORDER BY c.contract_date DESC 
+             FETCH FIRST 1 ROWS ONLY) AS current_annual_salary,
+            NVL(
+                (SELECT LISTAGG(TO_CHAR(salary_date, 'YYYY-MM') || ': ' || monthly_salary, ', ')
+                 WITHIN GROUP (ORDER BY salary_date)
+                 FROM salary s
+                 WHERE s.employee_id = e.employee_id 
+                 AND EXTRACT(YEAR FROM salary_date) = EXTRACT(YEAR FROM SYSDATE)
+                ), 'No salary records'
+            ) AS monthly_salaries
         FROM employee e
         JOIN department d ON e.department_id = d.department_id
-        WHERE e.username = :username
-    """, {'username': employee_id})
+        WHERE e.employee_id = :employee_id
+    """, {'employee_id': employee_id})
     employee_detail = cursor.fetchone()
+    print(employee_detail)
     cursor.close()
     return employee_detail
 
