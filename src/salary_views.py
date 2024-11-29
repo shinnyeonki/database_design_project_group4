@@ -28,7 +28,7 @@ salary = Blueprint('salary', __name__)
 #     return render_template('test/employee.html', employees=employees, employee_to_edit=employee_to_edit)
 
 
-@salary.route('/test/salary', methods=['GET', 'POST'])
+@salary.route('/salary', methods=['GET', 'POST'])
 def employee():
     employees = []
     employee_to_edit = None
@@ -42,7 +42,7 @@ def employee():
             employees = join_employee_salary()
     except cx_Oracle.DatabaseError as e:
         flash(f"Database error: {e}", 'error')
-    return render_template('test/salary.html', employees=employees, employee_to_edit=employee_to_edit)
+    return render_template('salary.html', employees=employees, employee_to_edit=employee_to_edit)
 
 def search_employee():
     cursor = g.db.cursor()
