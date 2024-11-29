@@ -21,7 +21,7 @@ def create_app():
     app.register_blueprint(main_views.main)
     app.register_blueprint(test_views.test)
     app.register_blueprint(sign_views.sign)
-    # app.register_blueprint(salary_views.salary)
+    app.register_blueprint(salary_views.salary)
     app.register_blueprint(search_views.search_em)
     
     return app
@@ -29,4 +29,4 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
 
-    app.run(debug=True, port=5010)
+    app.run(debug=True, port=5000)

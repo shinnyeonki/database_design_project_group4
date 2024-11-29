@@ -83,18 +83,18 @@ def search():
                 search_params = session.get('search_params', {})
                 query, params = build_search_query(search_params)
                 employees = execute_query(query, params)
-        else:
-            query = """
-                SELECT e.username,
-                    e.employee_name,
-                    d.department_name,
-                    COUNT(pp.project_id) AS current_projects
-                FROM employee e
-                JOIN department d ON e.department_id = d.department_id
-                LEFT JOIN participation_project pp ON e.employee_id = pp.employee_id AND pp.end_date IS NULL
-                GROUP BY e.username, e.employee_name, d.department_name
-            """
-            employees = execute_query(query, {})
+        # else:
+        #     query = """
+        #         SELECT e.username,
+        #             e.employee_name,
+        #             d.department_name,
+        #             COUNT(pp.project_id) AS current_projects
+        #         FROM employee e
+        #         JOIN department d ON e.department_id = d.department_id
+        #         LEFT JOIN participation_project pp ON e.employee_id = pp.employee_id AND pp.end_date IS NULL
+        #         GROUP BY e.username, e.employee_name, d.department_name
+        #     """
+        #     employees = execute_query(query, {})
     except cx_Oracle.DatabaseError as e:
         flash(f"데이터베이스 오류: {e}", 'error')
         
