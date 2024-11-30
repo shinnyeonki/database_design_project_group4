@@ -70,6 +70,7 @@ def execute_query(query, params):
     cursor.execute(query, params)
     results = cursor.fetchall()
     cursor.close()
+    print(results)
     return results
 
 def fetch_employee_detail(employee_id):
