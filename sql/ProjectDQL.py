@@ -175,7 +175,7 @@ def generate_insert_statements():
             # 계약 날짜는 해당 해의 이전해 12월 10일
             contract_date = f"{year - 1}/12/10"
             # 연봉 생성
-            annual_salary = random.randint(3000, 10000) * 10000
+            annual_salary = random.randint(2000, 7000) * 10000
             # 계약 데이터 추가
             contract_data.append((contract_id, employee[0], annual_salary, contract_date))
             # 첫 해는 계약 다음 해부터 월급 지급
@@ -271,67 +271,69 @@ def generate_insert_statements():
     
     
     #####################################################
-    # from dateutil.relativedelta import relativedelta
-    # from collections import defaultdict
+    from dateutil.relativedelta import relativedelta
+    from collections import defaultdict
 
-    # def analyze_project_timeline(project_data):
-    #     """
-    #     Analyzes project data to count active projects per month from 2021-01 to current
+    def analyze_project_timeline(project_data):
+        """
+        Analyzes project data to count active projects per month from 2021-01 to current
 
-    #     Args:
-    #         project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
-    #                      where dates are already datetime.date objects
+        Args:
+            project_data: List of tuples containing (project_id, customer_id, project_name, start_date, end_date)
+                         where dates are already datetime.date objects
 
-    #     Returns:
-    #         List of tuples containing (year, month, project_count)
-    #     """
-    #     # Process projects (dates are already datetime.date objects)
-    #     processed_projects = []
-    #     for project in project_data:
-    #         start_date = project[3]  # Already a date object
-    #         end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
-    #         processed_projects.append((project[0], start_date, end_date))
+        Returns:
+            List of tuples containing (year, month, project_count)
+        """
+        # Process projects (dates are already datetime.date objects)
+        processed_projects = []
+        for project in project_data:
+            start_date = project[3]  # Already a date object
+            end_date = None if project[4] in [None, 'null'] else project[4]  # Already a date object
+            processed_projects.append((project[0], start_date, end_date))
 
-    #     # Generate all months from 2021-01 to current
-    #     start_date = date(2020, 1, 1)
-    #     end_date = date(2024, 11, 1)  # Or use current date
+        # Generate all months from 2021-01 to current
+        start_date = date(2020, 1, 1)
+        end_date = date(2024, 11, 1)  # Or use current date
 
-    #     monthly_counts = []
-    #     current_date = start_date
+        monthly_counts = []
+        current_date = start_date
 
-    #     while current_date <= end_date:
-    #         # Count active projects for this month
-    #         active_projects = 0
-    #         month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
+        while current_date <= end_date:
+            # Count active projects for this month
+            active_projects = 0
+            month_end = (current_date + relativedelta(months=1)) - relativedelta(days=1)
 
-    #         for project in processed_projects:
-    #             project_start = project[1]
-    #             project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
+            for project in processed_projects:
+                project_start = project[1]
+                project_end = project[2] if project[2] is not None else date(2999, 12, 31)  # Far future date for NULL
 
-    #             if project_start <= month_end and project_end >= current_date:
-    #                 active_projects += 1
+                if project_start <= month_end and project_end >= current_date:
+                    active_projects += 1
 
-    #         monthly_counts.append((
-    #             current_date.year,
-    #             current_date.month,
-    #             active_projects
-    #         ))
+            monthly_counts.append((
+                current_date.year,
+                current_date.month,
+                active_projects
+            ))
 
-    #         current_date += relativedelta(months=1)
+            current_date += relativedelta(months=1)
 
-    #     return monthly_counts
+        return monthly_counts
 
-    # # Before printing INSERT statements:
-    # print("\n=== Project Timeline Analysis ===")
-    # print("Year | Month | Active Projects")
-    # print("-" * 30)
-    # for year, month, count in analyze_project_timeline(project_data):
-    #     print(f"{year:4d} | {month:5d} | {count:14d}")
-    # print("\n=== Starting INSERT statements ===\n")
+    # Before printing INSERT statements:
+    print("\n=== Project Timeline Analysis ===")
+    print("Year | Month | Active Projects")
+    print("-" * 30)
+    for year, month, count in analyze_project_timeline(project_data):
+        print(f"{year:4d} | {month:5d} | {count:14d}")
+    print("\n=== Starting INSERT statements ===\n")
 
-    # # Then continue with your INSERT statements...
+    # Then continue with your INSERT statements...
     #####################################################
     
+    
+    print('BEGIN')
     #department table
     for dept in department_data:  # department_id, department_name, department_number
         print(f'INSERT INTO department (department_id, department_name) VALUES ({dept[0]}, \'{dept[1]}\');')
@@ -403,6 +405,11 @@ def generate_insert_statements():
     for seminarParticipation in seminarParticipation_data:
         print(f'INSERT INTO seminar_participation (seminar_id, employee_id) VALUES ({seminarParticipation[0]}, {seminarParticipation[1]});')
     print('COMMIT;')
+    print('EXCEPTION')
+    print('    WHEN OTHERS THEN')
+    print('        DBMS_OUTPUT.PUT_LINE(\'에러 발생\');')
+    print('        ROLLBACK;')
+    print('END;')
     
     
     # # 직원 table
